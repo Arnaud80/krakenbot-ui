@@ -3,27 +3,30 @@ import Ticker from './components/Ticker';
 import Balance from './components/Balance';
 
 import './App.css';
+import 'typeface-roboto';
+import 'typeface-roboto-condensed';
+
 
 import Kraken from './components/Kraken';
+import { VtmnButton } from '@vtmn/react';
+
 const kraken = new Kraken();
 
 const App = () => {
  
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
-   /*state = {
-    ticker: null,
-    balance: null,
-    //setTicker: setTicker,
-  }*/
+  const [autoRefresh, setAutoRefresh] = useState(true);
 
   useEffect( () => {
-    console.log('App', 'Rendered...');
-    const timerId = setTimeout(() => {
-      updateTicker();
-      updateBalance();
-    }, 5000);
-    return () => clearTimeout(timerId);
+    if(autoRefresh) {
+      console.log('App', 'Rendered...');
+      const timerId = setTimeout(() => {
+        updateTicker();
+        updateBalance();
+      }, 5000);
+      return () => clearTimeout(timerId);
+    }
   });
 
   const updateTicker = async() => {  
@@ -75,6 +78,7 @@ const App = () => {
       <div className="App">
         <Ticker ticker={ticker} onClick={handleTickerClick}/>
         <Balance balance={balance} onClick={handleBalanceClick}/>
+        <VtmnButton autoRefresh={autoRefresh} onClick={() => setAutoRefresh(autoRefresh?false:true)}>{autoRefresh?'Stop autoRefresh':'Start autoRefresh'}</VtmnButton>
       </div>
     );
 }
