@@ -16,10 +16,10 @@ const App = () => {
  
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
-  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [autorefresh, setAutoRefresh] = useState('active');
 
   useEffect( () => {
-    if(autoRefresh) {
+    if(autorefresh==='active') {
       console.log('App', 'Rendered...');
       const timerId = setTimeout(() => {
         updateTicker();
@@ -78,7 +78,7 @@ const App = () => {
       <div className="App">
         <Ticker ticker={ticker} onClick={handleTickerClick}/>
         <Balance balance={balance} onClick={handleBalanceClick}/>
-        <VtmnButton autoRefresh={autoRefresh} onClick={() => setAutoRefresh(autoRefresh?false:true)}>{autoRefresh?'Stop autoRefresh':'Start autoRefresh'}</VtmnButton>
+        <VtmnButton autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>{autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}</VtmnButton>
       </div>
     );
 }
