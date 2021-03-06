@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# confidential settings
+src/components/kraken-config.js
+
 # production
 /build
 
