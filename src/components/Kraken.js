@@ -37,10 +37,79 @@ class Kraken {
         const public_key = config.public_key;
 
         const api_nonce = new Date() * 1000; // spoof microsecond
-        var api_post = {
+
+        var params = {
             'nonce': api_nonce,
-        }
-        var params = {};
+        };
+
+        var api_signature = this.getMessageSignature(api_path, params, private_key, api_nonce);
+
+        const url = 'http://localhost:3000' + api_path;
+
+        const options = {
+            method: 'POST',
+            headers: { 
+                'content-type': 'application/x-www-form-urlencoded',
+                'API-Key'  : public_key,
+                'API-Sign' : api_signature,
+            },
+            data: qs.stringify(params),
+            url,
+          };
+
+        const resp = await axios(options);
+        console.log(resp);
+        return resp;
+    }
+
+    getTradesHistory = async() => {
+        const api_path = config.private.tradesHistoryURI;
+        const private_key = config.private_key;
+        const public_key = config.public_key;
+
+        const api_nonce = new Date() * 1000; // spoof microsecond
+        
+        var params = {
+            'nonce' : api_nonce,
+        };
+
+        //params.nonce = api_nonce; 
+
+        var api_signature = this.getMessageSignature(api_path, params, private_key, api_nonce);
+
+        const url = 'http://localhost:3000' + api_path;
+
+        const options = {
+            method: 'POST',
+            headers: { 
+                'content-type': 'application/x-www-form-urlencoded',
+                'API-Key'  : public_key,
+                'API-Sign' : api_signature,
+            },
+            data: qs.stringify(params),
+            url,
+          };
+
+        const resp = await axios(options);
+        console.log(resp);
+        return resp;
+    }
+
+    addOrder = async(pair, type, orderType, price, volume) => {
+        const api_path = config.private.addOrderURI;
+        const private_key = config.private_key;
+        const public_key = config.public_key;
+
+        const api_nonce = new Date() * 1000; // spoof microsecond
+        
+        var params = {
+            'nonce' : api_nonce,
+            'pair' : pair,
+            'type' : type,
+            'ordertype' : orderType,
+            'price' : price,
+            'volume' : volume,
+        };
 
         params.nonce = api_nonce; 
 
@@ -55,7 +124,7 @@ class Kraken {
                 'API-Key'  : public_key,
                 'API-Sign' : api_signature,
             },
-            data: qs.stringify(api_post),
+            data: qs.stringify(params),
             url,
           };
 
@@ -76,6 +145,9 @@ const assets = {
 
 const pairs = {
     'XXBTZEUR' : 'BTC / EUR',
+    'XXLMZEUR' : 'XLM / EUR',
+    'XDGEUR'   : 'DOG / EUR',
+    'BCHEUR'   : 'BCH / EUR',
 }
 
 /*
@@ -88,4 +160,4 @@ const test_dataTicker={
 }
 */
 
-export {Kraken as default, assets};
+export {Kraken as default, assets, pairs};

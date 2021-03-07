@@ -11,6 +11,8 @@ const config = {
   },
   private: {
     balanceURI: '/0/private/Balance', // Balance URI
+    tradesHistoryURI : '/0/private/TradesHistory', // Trades History URI
+    addOrderURI : '/0/private/AddOrder', // add Order URI
   }
 }
 
