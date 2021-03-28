@@ -1,7 +1,7 @@
 import React from 'react';
 import { assets, EURpairs } from './Kraken';
 
-import { Accordion, Card, Button, useAccordionToggle } from 'react-bootstrap';
+import { Accordion, Card, useAccordionToggle } from 'react-bootstrap';
 //import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
 
 const Balance = props => {
@@ -9,10 +9,6 @@ const Balance = props => {
 
     const balanceIsNull = balance === null;
     console.log('Balance', balance);
-
-    const handleClick = (key) => {
-        console.log('Balance - onClick :' + key);
-    }
 
     function CustomToggle({ children, eventKey }) {
         const decoratedOnClick = useAccordionToggle(eventKey, () =>
