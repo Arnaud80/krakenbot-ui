@@ -23,6 +23,8 @@ const Ticker = props => {
     const ticker = props.ticker;
     const tickerIsNull = ticker === null;
 
+    console.log('Ticker', ticker);
+
     return (
         <div className='Ticker' onClick={props.onClick}>
             {tickerIsNull ? (

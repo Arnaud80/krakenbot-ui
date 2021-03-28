@@ -8,6 +8,7 @@ import 'typeface-roboto';
 import 'typeface-roboto-condensed';
 
 import Kraken from './components/Kraken';
+import {ALTpairs } from './components/Kraken';
 import { VtmnButton } from '@vtmn/react';
 import homeline from '@vtmn/icons/dist/vitamix/svg/home-line.svg';
 /*import playline from '@vtmn/icons/dist/vitamix/svg/play-line.svg';
@@ -16,32 +17,41 @@ import pauseline from '@vtmn/icons/dist/vitamix/svg/pause-line.svg';*/
 const kraken = new Kraken();
 
 const App = () => {
- 
+  const [currentPair, setcurrentPair] = useState('BCHEUR');
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
   const [tradesHistory, setTradesHistory] = useState(null);
   const [autorefresh, setAutoRefresh] = useState('active');
 
   useEffect( () => {
+    console.log('App - UseEffect','all');
     if(autorefresh==='active') {
-      console.log('App', 'Rendered...');
       const timerId = setTimeout(() => {
         updateTicker();
-        updateBalance();
+        // To update only on time at the startup.
+        if(balance===null) updateBalance();
       }, 5000);
       return () => clearTimeout(timerId);
     }
   });
 
+  useEffect( () => {
+    console.log('App - UseEffect','currentPair');
+    updateTicker();    
+    // As we need updateTicker manual refresh, we disable the warning for the previous line.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPair]);
+
   const updateTicker = async() => {  
     let newTicker={
-      pair: 'BCHEUR',
+      pair: currentPair,
       //lastData: null,
       //data: null
     };
 
+    console.log('App - updateTicker :',newTicker.pair);
     const result = await kraken.getTicker(newTicker.pair);
-    newTicker.data = result.data.result.BCHEUR;
+    newTicker.data = result.data.result[ALTpairs[newTicker.pair]];
 
     // Save the last result, before to update data
     try {
@@ -87,9 +97,11 @@ const App = () => {
     updateTicker();
   }
 
-  const handleBalanceClick = async() => {  
-    console.log('App', 'handleBalanceClick');
-    updateBalance();
+  const handleBalanceClick = async(pair) => {  
+    setcurrentPair(pair);
+    console.log('App - handleBalanceClick', pair);
+    //updateBalance();
+    //updateTicker();
   }
 
   const handleTradesHistoryClick = async() => {  
@@ -101,7 +113,6 @@ const App = () => {
     console.log('App', 'handleOnSell ' + pair + ' at ' + price + 'for ' + volume);
     sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
   }
-
   return (    
       <div className="App">
         <div>
@@ -118,6 +129,6 @@ const App = () => {
         </VtmnButton>
       </div>  
     );
-}
+}      
 
 export default App;

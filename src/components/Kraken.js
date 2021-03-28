@@ -134,7 +134,6 @@ class Kraken {
     }
 }
 
-
 const assets = {
         'ZEUR' : 'Euro',
         'XXBT' : 'Bitcoin',
@@ -150,6 +149,22 @@ const pairs = {
     'BCHEUR'   : 'BCH / EUR',
 }
 
+const EURpairs = {
+    'ZEUR' : 'EUREUR',
+    'XXBT' : 'XBTEUR',
+    'XXLM' : 'XLMEUR',
+    'XXDG'   : 'XDGEUR',
+    'BCH'   : 'BCHEUR',
+}
+
+const ALTpairs = {
+    'EUREUR' : 'EUREUR',
+    'XBTEUR' : 'XXBTZEUR',
+    'XLMEUR' : 'XXLMZEUR',
+    'XDGEUR' : 'XDGEUR',
+    'BCHEUR' : 'BCHEUR',
+}
+
 /*
 const test_dataTicker={
   "error":[],
@@ -160,4 +175,4 @@ const test_dataTicker={
 }
 */
 
-export {Kraken as default, assets, pairs};
+export {Kraken as default, assets, pairs, EURpairs, ALTpairs};
