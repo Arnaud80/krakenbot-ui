@@ -1,81 +1,113 @@
 import React from 'react';
-import { pairs } from './Kraken';
+import { ALTpairs } from './Kraken';
+import { Table } from 'react-bootstrap';
 
-const getCostPrice = (pair, trades) => {
-    let avg=0.0;
+// This function return an object whom contain
+// - 'unitCostPrice' :The calcuation of the UCP (Unit Cost Price)
+// - 'volume' : The Total Buying Volume
+// - 'Trades' : Array of buying corresponding trades
+// - 'count' : The number of corresponding trades
+const getUnitCostPriceInfo = (trades, pair, currentBalance) => {
+    let unitCostPrice=0.0;
     let vol=0.0;
-    let totalCost=0.0;
+    let totalBuyVol=0.0;
+    let totalBuyCost=0.0;
 
     const tradesArray=Object.keys(trades);
-
+    let pairTrades=[];
+    let count=0;
+    
     tradesArray.forEach(trade => {
+        
         if(trades[trade].pair===pair) {
-            if(vol===0) {
-                avg = parseFloat(trades[trade].price);
-                vol = parseFloat(trades[trade].vol);
-                totalCost = avg * vol;
-            } else {
-                vol = vol + parseFloat(trades[trade].vol) * (trades[trade].type==='buy'?1:-1);
-                totalCost = totalCost + parseFloat(trades[trade].price) * parseFloat(trades[trade].vol);
-                avg = totalCost / vol;
+            vol = vol + parseFloat(trades[trade].vol) * (trades[trade].type==='buy'?1:-1);
+            if(trades[trade].type==='buy') {
+                totalBuyVol = totalBuyVol + parseFloat(trades[trade].vol);
+                totalBuyCost = totalBuyCost + parseFloat(trades[trade].price) * parseFloat(trades[trade].vol)  + parseFloat(trades[trade].fee);
+                unitCostPrice = totalBuyCost / totalBuyVol;
             }
+
+            pairTrades[trade]={
+                'time':trades[trade].time,
+                'type':trades[trade].type,
+                'price':trades[trade].price,
+                'volume':trades[trade].vol,
+                'fee':trades[trade].fee,
+                'cost':trades[trade].cost,
+            };
+            count++;
         }
     });
 
-    console.log('getCostPrice - avg', avg);
-    return({'costPrice' : avg, 'volume' : vol});
+    return({'unitCostPrice' : unitCostPrice, 'volume' : totalBuyVol, 'Trades': pairTrades, 'count': count});
+}
+
+const LogTrades = props => {
+    const logTrades = props.trades;
+    console.log('LogTrades', logTrades)
+    return (
+        <Table striped bordered hover size="sm" variant="dark">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Volume</th>
+                    <th>Fee</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    Object.keys(logTrades).map((key, i) => (
+                        <tr key={i}>
+                            <td>{i}</td>
+                            <td>{key}</td>
+                            <td>{new Date(logTrades[key].time * 1000).toLocaleString()}</td>
+                            <td>{logTrades[key].type}</td>
+                            <td>{logTrades[key].price}</td>
+                            <td>{logTrades[key].volume}</td>
+                            <td>{logTrades[key].fee}</td>
+                            <td>{logTrades[key].cost}</td>
+                        </tr>
+                    ))
+                }  
+            </tbody>
+        </Table>
+    )
 }
 
 const TradesHistory = props => {
     const tradesHistory=props.tradesHistory;
     const tradesHistoryIsNull = tradesHistory === null;
+    const currentPair = props.currentPair;
+    const currentBalance = props.currentBalance;
 
     let trades=null;
-    let XXBTZEUR=0;
-    let BCHEUR=0;
-    let XDGEUR=0;
-    let XXLMZEUR=0;
+    let UCPinfo=null;
     
     if(!tradesHistoryIsNull) {
         trades=tradesHistory.trades;
-        XXBTZEUR = getCostPrice('XXBTZEUR', trades);
-        BCHEUR = getCostPrice('BCHEUR', trades);
-        XDGEUR = getCostPrice('XDGEUR', trades);
-        XXLMZEUR = getCostPrice('XXLMZEUR', trades);
+        UCPinfo = getUnitCostPriceInfo(trades, ALTpairs[currentPair], currentBalance);
     }
-
-    //let trades=tradesHistory.trades;
-    console.log('tradesHistory', tradesHistory);
 
     return (
         <div className='TradesHistory'>
-        <span onClick={props.onClick}>resfresh</span>
-        {tradesHistoryIsNull ? (
-            <>...</>
-        ) : (
-            <>
-            <div className='TradesHistory-Count'>
-                {tradesHistory.count} trades found
-            </div>
-            Average buying cost of BTC = {XXBTZEUR.costPrice}<div className='sell' onClick={() => props.onSell('BTZ', 'BTZEUR', XXBTZEUR.costPrice*1.05, XXBTZEUR.volume)}>sell +5% ({XXBTZEUR.costPrice*1.05})</div><br/>
-            Average buying cost of BCH = {BCHEUR.costPrice}<div className='sell' onClick={() => props.onSell('BCH', 'BCHEUR', BCHEUR.costPrice*1.05, BCHEUR.volume)}>sell +5% ({BCHEUR.costPrice*1.05})</div><br/>
-            Average buying cost of XDG = {XDGEUR.costPrice}<div className='sell' onClick={() => props.onSell('XDG', 'XDGEUR', XDGEUR.costPrice*1.05, XDGEUR.volume)}>sell +5% ({XDGEUR.costPrice*1.05})</div><br/>
-            Average buying cost of XLM = {XXLMZEUR.costPrice}<div className='sell' onClick={() => props.onSell('XXLM', 'XXLMZEUR', XXLMZEUR.costPrice*1.05, XXLMZEUR.volume)}>sell +5% ({XXLMZEUR.costPrice*1.05})</div><br/>
-            {   /*
-                Object.keys(trades).map((key, i) => (
-                    <div key={i}>
-                        [{trades[key].type}] 
-                        {pairs[trades[key].pair]} : 
-                        {trades[key].vol} at {trades[key].price} for {trades[key].cost}
+            {tradesHistoryIsNull ? (
+                <>...</>
+            ) : (
+                <>
+                    <div className='TradesHistory-Count'>
+                        {UCPinfo.count} trade(s) found<br/>
+                        Unit Cost Price = {UCPinfo.unitCostPrice}
                     </div>
-                ))*/
-
-            }
-            </>
-        )}
+                    <LogTrades trades={UCPinfo.Trades}/>
+                </>
+            )}
         </div>
     )
 }
-
 
 export default TradesHistory;

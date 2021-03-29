@@ -1,18 +1,14 @@
 import React from 'react';
 import { assets, EURpairs } from './Kraken';
-
-import { Accordion, Card, Button, useAccordionToggle } from 'react-bootstrap';
-//import { useAccordionToggle } from "react-bootstrap/AccordionToggle";
+import TradesHistory from './TradesHistory';
+import { Accordion, Card, useAccordionToggle } from 'react-bootstrap';
 
 const Balance = props => {
-    const balance=props.balance;
+    const balance = props.balance;
+    const tradesHistory = props.tradesHistory;
 
     const balanceIsNull = balance === null;
     console.log('Balance', balance);
-
-    const handleClick = (key) => {
-        console.log('Balance - onClick :' + key);
-    }
 
     function CustomToggle({ children, eventKey }) {
         const decoratedOnClick = useAccordionToggle(eventKey, () =>
@@ -37,7 +33,7 @@ const Balance = props => {
         ) : (
             <Accordion defaultActiveKey="0">
             {   // Loop on returned assets
-                Object.keys(balance).map((key, i) => (
+                Object.keys(balance).filter(key => balance[key]>=0.0001).map((key, i) => (
                     <Card key={i}>
                         <Card.Header>
                             <CustomToggle eventKey={key}>
@@ -45,7 +41,10 @@ const Balance = props => {
                             </CustomToggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey={key}>
-                            <Card.Body>{balance[key]}</Card.Body>
+                            <Card.Body>
+                                {balance[key]}
+                                <TradesHistory tradesHistory={tradesHistory} currentPair={EURpairs[key]} currentBalance={balance[key]}/>
+                            </Card.Body>
                         </Accordion.Collapse>
                     </Card>
                 ))

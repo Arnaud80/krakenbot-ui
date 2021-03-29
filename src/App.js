@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Ticker from './components/Ticker';
 import Balance from './components/Balance';
-import TradesHistory from './components/TradesHistory';
 
 import './App.css';
 import 'typeface-roboto';
@@ -9,15 +8,12 @@ import 'typeface-roboto-condensed';
 
 import Kraken from './components/Kraken';
 import {ALTpairs } from './components/Kraken';
-import { VtmnButton } from '@vtmn/react';
-import homeline from '@vtmn/icons/dist/vitamix/svg/home-line.svg';
-/*import playline from '@vtmn/icons/dist/vitamix/svg/play-line.svg';
-import pauseline from '@vtmn/icons/dist/vitamix/svg/pause-line.svg';*/
+import { Button } from 'react-bootstrap';
 
 const kraken = new Kraken();
 
 const App = () => {
-  const [currentPair, setcurrentPair] = useState('BCHEUR');
+  const [currentPair, setcurrentPair] = useState('XBTEUR');
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
   const [tradesHistory, setTradesHistory] = useState(null);
@@ -38,9 +34,15 @@ const App = () => {
   useEffect( () => {
     console.log('App - UseEffect','currentPair');
     updateTicker();    
-    // As we need updateTicker manual refresh, we disable the warning for the previous line.
+    // As we need updateTicker for manual refresh, we disable the warning for the previous line.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPair]);
+
+  // Executed one time
+  useEffect( () => {
+    console.log('App - UseEffect','one time executed to load TradesHistory');
+    updateTradesHistory();
+  }, [])
 
   const updateTicker = async() => {  
     let newTicker={
@@ -73,7 +75,7 @@ const App = () => {
   }
 
   const updateTradesHistory = async() => {  
-    const result = await kraken.getTradesHistory('');
+    const result = await kraken.getTradesHistory();
     let tradesHistory = result.data.result;
 
     setTradesHistory(tradesHistory);
@@ -97,8 +99,8 @@ const App = () => {
     updateTicker();
   }
 
-  const handleBalanceClick = async(pair) => {  
-    setcurrentPair(pair);
+  const handleBalanceClick = async(pair) => {
+    if(pair!=null) setcurrentPair(pair);
     console.log('App - handleBalanceClick', pair);
     //updateBalance();
     //updateTicker();
@@ -109,24 +111,18 @@ const App = () => {
     updateTradesHistory();
   }
 
-  const handleOnSell = async(asset, pair, price, volume) => {
+  const handleOnSell = async(pair, price, volume) => {
     console.log('App', 'handleOnSell ' + pair + ' at ' + price + 'for ' + volume);
-    sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
+    //sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
   }
   return (    
       <div className="App">
-        <div>
-          <img
-            key="home-line" src={homeline}
-            alt="home-line" width="32" height="32"
-          />
-        </div>
         <Ticker ticker={ticker} onClick={handleTickerClick}/>
-        <Balance balance={balance} onClick={handleBalanceClick}/>
-        <TradesHistory tradesHistory={tradesHistory} onClick={handleTradesHistoryClick} onSell={handleOnSell}/>
-        <VtmnButton autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
+        <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
+        
+        <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
           {autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}
-        </VtmnButton>
+        </Button>
       </div>  
     );
 }      

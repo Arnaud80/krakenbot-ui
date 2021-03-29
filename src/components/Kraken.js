@@ -150,7 +150,6 @@ const pairs = {
 }
 
 const EURpairs = {
-    'ZEUR' : 'EUREUR',
     'XXBT' : 'XBTEUR',
     'XXLM' : 'XLMEUR',
     'XXDG'   : 'XDGEUR',
@@ -158,7 +157,6 @@ const EURpairs = {
 }
 
 const ALTpairs = {
-    'EUREUR' : 'EUREUR',
     'XBTEUR' : 'XXBTZEUR',
     'XLMEUR' : 'XXLMZEUR',
     'XDGEUR' : 'XDGEUR',
