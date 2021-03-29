@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Ticker from './components/Ticker';
 import Balance from './components/Balance';
-import TradesHistory from './components/TradesHistory';
 
 import './App.css';
 import 'typeface-roboto';
@@ -39,6 +38,12 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPair]);
 
+  // Executed one time
+  useEffect( () => {
+    console.log('App - UseEffect','one time executed to load TradesHistory');
+    updateTradesHistory();
+  }, [])
+
   const updateTicker = async() => {  
     let newTicker={
       pair: currentPair,
@@ -70,7 +75,7 @@ const App = () => {
   }
 
   const updateTradesHistory = async() => {  
-    const result = await kraken.getTradesHistory('');
+    const result = await kraken.getTradesHistory();
     let tradesHistory = result.data.result;
 
     setTradesHistory(tradesHistory);
@@ -106,16 +111,15 @@ const App = () => {
     updateTradesHistory();
   }
 
-  const handleOnSell = async(asset, pair, price, volume) => {
+  const handleOnSell = async(pair, price, volume) => {
     console.log('App', 'handleOnSell ' + pair + ' at ' + price + 'for ' + volume);
-    sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
+    //sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
   }
   return (    
       <div className="App">
         <Ticker ticker={ticker} onClick={handleTickerClick}/>
-        <Balance balance={balance} onClick={handleBalanceClick}/>
-        <TradesHistory tradesHistory={tradesHistory} onClick={handleTradesHistoryClick} onSell={handleOnSell}/>
-
+        <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
+        
         <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
           {autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}
         </Button>
