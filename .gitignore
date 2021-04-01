@@ -20,12 +20,12 @@ src/components/kraken-secret.js
 .env.development.local
 .env.test.local
 .env.production.local
+.eslintcache
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
 .eslintcache
 .eslintcache
-.eslintcache
-.eslintcache
-.eslintcache
+yarn.lock

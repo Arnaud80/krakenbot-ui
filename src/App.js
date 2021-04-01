@@ -7,13 +7,14 @@ import 'typeface-roboto';
 import 'typeface-roboto-condensed';
 
 import Kraken from './components/Kraken';
-import {ALTpairs } from './components/Kraken';
+import {ALTpairs, EURpairs } from './components/Kraken';
 import { Button } from 'react-bootstrap';
 
 const kraken = new Kraken();
 
 const App = () => {
   const [currentPair, setcurrentPair] = useState('XBTEUR');
+  const [tickers, setTickers] = useState(null);
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
   const [tradesHistory, setTradesHistory] = useState(null);
@@ -70,8 +71,46 @@ const App = () => {
   const updateBalance = async() => {  
     const result = await kraken.getBalance('');
     let balance = result.data.result;
+    let pairList = [];
+        
+    //console.log("App - updateBalance - DEBUG balance=",balance);
+    Object.keys(balance).map((key, i) => (
+      //console.log("App - updateBalance - DEBUG key=",key)
+      pairList[i]=EURpairs[key]
+    ));
+
+    updateTickers(pairList);
 
     setBalance(balance);
+  }
+
+  const updateTickers = async(pairList) => {
+    let result=null;
+    let tickersArray = [];
+      
+    //console.log("App - updateTickers - pairList=",pairList);
+    //console.log("App - updateTickers - pairList.length=",pairList.length);
+
+    // We start at one one to avoid pair EUREUR
+    // TODO : Refactoring needed
+    for(let i=1; i<pairList.length;i++) {
+      let ticker={
+        //pair: pairList,
+        //lastData: null,
+        //data: null
+      };
+
+      ticker.pair=pairList[i];
+      //console.log("App - updateTickers - pair=",ticker.pair);
+      
+      result = await kraken.getTicker(ticker.pair);
+      ticker.data = result.data.result[ALTpairs[ticker.pair]];
+      tickersArray[i-1] = ticker;
+      //console.log("App - updateTickers - ticker.data=",ticker.data);
+    }
+    
+    console.log("App - updateTickers - tickersArray=",tickersArray);
+    setTickers(tickersArray);
   }
 
   const updateTradesHistory = async() => {  
@@ -118,7 +157,7 @@ const App = () => {
   return (    
       <div className="App">
         <Ticker ticker={ticker} onClick={handleTickerClick}/>
-        <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
+        <Balance balance={balance} tickers={tickers} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
         
         <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
           {autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}
