@@ -14,7 +14,6 @@ const kraken = new Kraken();
 
 const App = () => {
   const [currentPair, setcurrentPair] = useState('XBTEUR');
-  const [tickers, setTickers] = useState(null);
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
   const [tradesHistory, setTradesHistory] = useState(null);
@@ -26,7 +25,7 @@ const App = () => {
       const timerId = setTimeout(() => {
         updateTicker();
         // To update only on time at the startup.
-        if(balance===null) updateBalance();
+        updateBalance();
       }, 5000);
       return () => clearTimeout(timerId);
     }
@@ -69,48 +68,41 @@ const App = () => {
   }
 
   const updateBalance = async() => {  
-    const result = await kraken.getBalance('');
-    let balance = result.data.result;
-    let pairList = [];
-        
-    //console.log("App - updateBalance - DEBUG balance=",balance);
-    Object.keys(balance).map((key, i) => (
+    let apiReturn = await kraken.getBalance('');
+    let result = apiReturn.data.result;
+    let newBalance = [];
+
+    // First loop on API Balance return to prepare the newBalance
+    // TODO : Refactoring - Check if we can do better by using object key/value insteed Array
+    // Maybe by using 4 Arrays named Asset, Pair, Volume and Value
+    newBalance=Object.keys(result).filter(key => result[key]>=0.0001).map((key, i) => {
       //console.log("App - updateBalance - DEBUG key=",key)
-      pairList[i]=EURpairs[key]
-    ));
+      let pair=EURpairs[key];
 
-    updateTickers(pairList);
+      let eltBalance=[
+        //'asset' : 
+        key,
+        //'pair' : 
+        pair,
+        //'volume' :
+        result[key],
+        //'value' :
+        ''
+      ];
 
-    setBalance(balance);
-  }
+      return eltBalance;
+    });
 
-  const updateTickers = async(pairList) => {
-    let result=null;
-    let tickersArray = [];
-      
-    //console.log("App - updateTickers - pairList=",pairList);
-    //console.log("App - updateTickers - pairList.length=",pairList.length);
+    // Second loop needed because await call is not possible in lambda loop
+    for(let i=0;i<newBalance.length;i++) {
+      apiReturn = await kraken.getTicker(newBalance[i][1]);
+      console.log("App - updateBalance - DEBUG apiReturn=",apiReturn);
 
-    // We start at one one to avoid pair EUREUR
-    // TODO : Refactoring needed
-    for(let i=1; i<pairList.length;i++) {
-      let ticker={
-        //pair: pairList,
-        //lastData: null,
-        //data: null
-      };
-
-      ticker.pair=pairList[i];
-      //console.log("App - updateTickers - pair=",ticker.pair);
-      
-      result = await kraken.getTicker(ticker.pair);
-      ticker.data = result.data.result[ALTpairs[ticker.pair]];
-      tickersArray[i-1] = ticker;
-      //console.log("App - updateTickers - ticker.data=",ticker.data);
+      let ticker = apiReturn.data.result[ALTpairs[newBalance[i][1]]];
+      newBalance[i][3] = ticker.c[0];
     }
-    
-    console.log("App - updateTickers - tickersArray=",tickersArray);
-    setTickers(tickersArray);
+
+    setBalance(newBalance);
   }
 
   const updateTradesHistory = async() => {  
@@ -139,7 +131,7 @@ const App = () => {
   }
 
   const handleBalanceClick = async(pair) => {
-    if(pair!=null) setcurrentPair(pair);
+    setcurrentPair(pair);
     console.log('App - handleBalanceClick', pair);
     //updateBalance();
     //updateTicker();
@@ -154,10 +146,11 @@ const App = () => {
     console.log('App', 'handleOnSell ' + pair + ' at ' + price + 'for ' + volume);
     //sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
   }
+
   return (    
       <div className="App">
         <Ticker ticker={ticker} onClick={handleTickerClick}/>
-        <Balance balance={balance} tickers={tickers} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
+        <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
         
         <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
           {autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}

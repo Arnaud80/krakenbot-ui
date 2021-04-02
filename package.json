@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
+    "chokidar": "^3.5.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
     "http2-wrapper": "^1.0.3",

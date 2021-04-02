@@ -9,7 +9,7 @@ let dataChart = {
   labels: [],
   datasets: [
     {
-      data: [300, 50, 300],
+      data: [],
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
       hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
     }
@@ -19,30 +19,27 @@ let dataChart = {
 const Balance = props => {
     const balance = props.balance;
     const tradesHistory = props.tradesHistory;
-    const tickers = props.tickers;
-
     const balanceIsNull = balance === null;
-    const tickersIsNull = tickers === null;
 
-    if(!balanceIsNull && !tickersIsNull) {        
-        console.log('Balance - balance =', balance);
-        console.log('Balance - tickers =', tickers);
-        
-        for(let i=0;i<tickers.length;i++) {
-            dataChart.labels[i]=tickers[i].pair;
-            console.log('Balance - tickers[i].data.c[0] =', tickers[i].data.c[0]);
+    let totalBalance = 0.0;
+
+    console.log('Balance - balance =', balance);
+
+    if(!balanceIsNull) {          
+        for(let i=0;i<balance.length;i++) {
+            dataChart.labels[i]=balance[i][1];
             
-            dataChart.datasets.data[i]=parseFloat(tickers[i].data.c[0]);
+            dataChart.datasets[0].data[i]=parseFloat(balance[i][2]) * parseFloat(balance[i][3]);
+            totalBalance+=dataChart.datasets[0].data[i];
         }
     }
-
-    /*Object.keys(balance).filter(key => balance[key]>=0.0001).map((key, i) => (dataChart.labels[i]=assets[key]));
-        console.log('Balance DEBUG',dataChart.labels[0]);*/
     
     function CustomToggle({ children, eventKey }) {
-        const decoratedOnClick = useAccordionToggle(eventKey, () =>
-        //console.log(eventKey)
-        props.onClick(EURpairs[eventKey])
+      console.log('Balance - CustomToggle - eventKey=',eventKey);
+      console.log('Balance - CustomToggle - balance[eventKey][1]=',balance[eventKey][1]);
+
+      const decoratedOnClick = useAccordionToggle(eventKey, () =>
+        props.onClick(balance[eventKey][1])
       );
         return (
           <button
@@ -57,26 +54,27 @@ const Balance = props => {
 
     return (
         <div className='Balance'>
-        {balanceIsNull || tickersIsNull ? (
+        {balanceIsNull ? (
             <>...</>
         ) : (
             <>
                 <div style={{ width: 400 }}>
                     <Chart type='pie' data={dataChart} />
+                    {totalBalance} Euros
                 </div>
                 <Accordion defaultActiveKey="0">
                 {   // Loop on returned assets
-                    Object.keys(balance).filter(key => balance[key]>=0.0001).map((key, i) => (
+                    Object.keys(balance).map((i) => (
                         <Card key={i}>
                             <Card.Header>
-                                <CustomToggle eventKey={key}>
-                                {assets[key]} ({key})
+                                <CustomToggle eventKey={i}>
+                                {assets[balance[i][0]]} ({balance[i][0]})
                                 </CustomToggle>
                             </Card.Header>
-                            <Accordion.Collapse eventKey={key}>
+                            <Accordion.Collapse eventKey={i}>
                                 <Card.Body>
-                                    {balance[key]}
-                                    <TradesHistory tradesHistory={tradesHistory} currentPair={EURpairs[key]} currentBalance={balance[key]}/>
+                                    {balance[i][2]}
+                                    <TradesHistory tradesHistory={tradesHistory} currentPair={EURpairs[balance[i][0]]} currentBalance={balance[balance[i][0]]}/>
                                 </Card.Body>
                             </Accordion.Collapse>
                         </Card>
