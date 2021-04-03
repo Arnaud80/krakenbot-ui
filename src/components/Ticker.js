@@ -31,6 +31,7 @@ const Ticker = props => {
                 <>...</>
             ) : (
                 <div 
+                    data-testid='ticker'
                     className='last_trade' 
                     style={{color : statusColor[ticker.lastTradeStatus]}}>
                     Last trade for {ticker.pair} = {ticker.data.c[0]}

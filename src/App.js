@@ -147,6 +147,8 @@ const App = () => {
     //sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
   }
 
+  console.log('========> App = balance =', balance);
+
   return (    
       <div className="App">
         <Ticker ticker={ticker} onClick={handleTickerClick}/>
