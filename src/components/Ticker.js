@@ -23,7 +23,7 @@ const Ticker = props => {
     const ticker = props.ticker;
     const tickerIsNull = ticker === null;
 
-    console.log('Ticker', ticker);
+    //console.log('Ticker', ticker);
 
     return (
         <div className='Ticker' onClick={props.onClick}>
@@ -31,6 +31,7 @@ const Ticker = props => {
                 <>...</>
             ) : (
                 <div 
+                    data-testid='ticker'
                     className='last_trade' 
                     style={{color : statusColor[ticker.lastTradeStatus]}}>
                     Last trade for {ticker.pair} = {ticker.data.c[0]}

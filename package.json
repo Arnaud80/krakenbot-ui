@@ -13,6 +13,7 @@
     "chokidar": "^3.5.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
+    "cypress": "^6.8.0",
     "http2-wrapper": "^1.0.3",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
@@ -26,7 +27,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --record --key aa59fd00-85e3-4c9e-b6e0-f486f1380689"
   },
   "eslintConfig": {
     "extends": [

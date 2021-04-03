@@ -40,6 +40,7 @@ const getUnitCostPriceInfo = (trades, pair, currentBalance) => {
     });
 
     return({'unitCostPrice' : unitCostPrice, 'volume' : totalBuyVol, 'Trades': pairTrades, 'count': count});
+    //return({'unitCostPrice' : 1, 'volume' : 1, 'Trades': 'XBTEUR', 'count': 1});
 }
 
 const LogTrades = props => {
@@ -85,12 +86,10 @@ const TradesHistory = props => {
     const currentPair = props.currentPair;
     const currentBalance = props.currentBalance;
 
-    let trades=null;
     let UCPinfo=null;
-    
+
     if(!tradesHistoryIsNull) {
-        trades=tradesHistory.trades;
-        UCPinfo = getUnitCostPriceInfo(trades, ALTpairs[currentPair], currentBalance);
+        UCPinfo = getUnitCostPriceInfo(tradesHistory.trades, ALTpairs[currentPair], currentBalance);
     }
 
     return (
