@@ -4,7 +4,6 @@ import TradesHistory from './TradesHistory';
 import { Accordion, Card, useAccordionToggle } from 'react-bootstrap';
 import { Chart } from '@bit/primefaces.primereact.chart';
 
-
 let dataChart = {
   labels: [],
   datasets: [
@@ -20,11 +19,12 @@ const Balance = props => {
     const balance = props.balance;
     const tradesHistory = props.tradesHistory;
     const balanceIsNull = balance === null;
+    const isTest = props.test !== undefined;
 
     let totalBalance = 0.0;
 
-    console.log('Balance - balance =', balance);
-    console.log('Balance - tradesHistory =', tradesHistory);
+    //console.log('Balance - balance =', balance);
+    //console.log('Balance - tradesHistory =', tradesHistory);
 
 
     if(!balanceIsNull) {          
@@ -37,8 +37,8 @@ const Balance = props => {
     }
     
     function CustomToggle({ children, eventKey }) {
-      console.log('Balance - CustomToggle - eventKey=',eventKey);
-      console.log('Balance - CustomToggle - balance[eventKey][1]=',balance[eventKey][1]);
+      //console.log('Balance - CustomToggle - eventKey=',eventKey);
+      //console.log('Balance - CustomToggle - balance[eventKey][1]=',balance[eventKey][1]);
 
       const decoratedOnClick = useAccordionToggle(eventKey, () =>
         props.onClick(balance[eventKey][1])
@@ -53,7 +53,7 @@ const Balance = props => {
           </button>
         );
       }
-
+  
     return (
         <div className='Balance' data-testid='balance'>
         {balanceIsNull ? (
@@ -62,7 +62,7 @@ const Balance = props => {
           <>
             <div style={{ width: 400 }} data-testid='totalBalance'>
               {/*Added props.test to avoid JSON error during test on Chart component*/}
-              {props.test===null?(<Chart data-testid='chart' type='pie' data={dataChart}/>):('')}
+              {!isTest?(<Chart data-testid='chart' type='pie' data={dataChart}/>):('')}
               {totalBalance} Euros
             </div>
             <Accordion defaultActiveKey="0" data-testid='accordion'>
