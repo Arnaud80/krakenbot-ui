@@ -749,39 +749,25 @@ it("should render balance", () => {
   
     expect(
       container.querySelector("[data-testid='balance']")
-    ).toHaveTextContent('test');
-  
+    ).toBeVisible();
+
+    expect(
+        container.querySelector("[data-testid='totalBalance']").textContent
+      ).toBe('98.9431621656 Euros');
+
+      expect(
+        container.querySelector("[data-testid='toggle0']").textContent
+      ).toBe('Stellar Lumens (XXLM)');
+
+      expect(
+        container.querySelector("[data-testid='body0']").textContent
+      ).toBe('50.00000000');
+
+      expect(
+        container.querySelector("[data-testid='toggle1']").textContent
+      ).toBe('Bitcoin Cash (BCH)');
+
+      expect(
+        container.querySelector("[data-testid='body1']").textContent
+      ).toBe('0.1603501800');
 });
-
-/*
-describe('Render Balance component', () => {
-    
-    console.log(dataBalance);
-
-    describe('render the Ticker component', () => {
-        ({ getByTestId } = render(<Balance balance={dataBalance}/>))
-
-        //const balance=getByTestId('balance');
-        const chart=getByTestId('chart');
-        const accordion=getByTestId('accordion');
-        const toggle1=getByTestId('toggle1');
-        const body1=getByTestId('body1');
-        const toggle2=getByTestId('toggle2');
-        const body2=getByTestId('body2');
-
-        it('check if Balance is correctly implemented with all his childs', () => {
-            expect(balance.toContainElement(chart));
-            expect(balance.toContainElement(accordion));
-            expect(accordion.toContainElement(toggle1));
-            expect(accordion.toContainElement(body1));
-            expect(accordion.toContainElement(toggle2));
-            expect(accordion.toContainElement(body2));
-        });
-        
-        it('check if Balance is correctly implemented with all his childs', () => {
-            //expect(balance.toContainElement(chart));
-            //expect(getByTestId('balance')).toContainElement(chart);
-        });
-    });
-});
-*/

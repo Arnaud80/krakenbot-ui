@@ -60,22 +60,23 @@ const Balance = props => {
             <>...</>
         ) : (
           <>
-            <div style={{ width: 400 }}>
+            <div style={{ width: 400 }} data-testid='totalBalance'>
+              {/*Added props.test to avoid JSON error during test on Chart component*/}
               {props.test===null?(<Chart data-testid='chart' type='pie' data={dataChart}/>):('')}
               {totalBalance} Euros
             </div>
             <Accordion defaultActiveKey="0" data-testid='accordion'>
                 { // Loop on returned assets
                   Object.keys(balance).map((i) => (
-                      <Card key={i} data-testid='card{i}'>
+                      <Card key={i}>
                           <Card.Header>
-                              <CustomToggle eventKey={i} data-testid='toggle{i}'>
-                              {assets[balance[i][0]]} ({balance[i][0]})
+                              <CustomToggle eventKey={i}>
+                                <span data-testid={'toggle'+i}>{assets[balance[i][0]]} ({balance[i][0]})</span>
                               </CustomToggle>
                           </Card.Header>
                           <Accordion.Collapse eventKey={i}>
-                              <Card.Body data-testid='body{i}'>
-                                  {balance[i][2]}
+                              <Card.Body>
+                                  <span data-testid={'body'+i}>{balance[i][2]}</span>
                                   <TradesHistory tradesHistory={tradesHistory} currentPair={EURpairs[balance[i][0]]} currentBalance={balance[balance[i][0]]}/>
                               </Card.Body>
                           </Accordion.Collapse>
