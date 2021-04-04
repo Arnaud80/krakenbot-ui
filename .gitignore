@@ -6,7 +6,7 @@
 .pnp.js
 
 # testing
-/coverage
+# /coverage
 
 # confidential settings
 src/components/kraken-secret.js
@@ -30,3 +30,24 @@ yarn-error.log*
 .eslintcache
 yarn.lock
 cypress/videos/
+coverage/lcov-report/base.css
+coverage/lcov-report/block-navigation.js
+coverage/lcov-report/favicon.png
+coverage/lcov-report/index.html
+coverage/lcov-report/prettify.css
+coverage/lcov-report/prettify.js
+coverage/lcov-report/sort-arrow-sprite.png
+coverage/lcov-report/sorter.js
+coverage/lcov-report/src/App.js.html
+coverage/lcov-report/src/index.html
+coverage/lcov-report/src/index.js.html
+coverage/lcov-report/src/reportWebVitals.js.html
+coverage/lcov-report/src/components/Balance.js.html
+coverage/lcov-report/src/components/index.html
+coverage/lcov-report/src/components/kraken-config.js.html
+coverage/lcov-report/src/components/kraken-secret.js.html
+coverage/lcov-report/src/components/Kraken.js.html
+coverage/lcov-report/src/components/template_kraken-secret.js.html
+coverage/lcov-report/src/components/Ticker.js.html
+coverage/lcov-report/src/components/TradesHistory.js.html
+coverage/coverage-final.json
