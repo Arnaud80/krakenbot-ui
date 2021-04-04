@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+    <file path="/Users/ARNAUD/Documents/Eclipse-workspace/krakenbot-ui/src/__tests__/Ticker.test.js">
+        <testCase name="&lt;Ticker ticker={ticker}/&gt; render the Ticker component check Ticker displayed is correctly displayed" duration="10"/>
+    </file>
+    <file path="/Users/ARNAUD/Documents/Eclipse-workspace/krakenbot-ui/src/__tests__/balance.test.js">
+        <testCase name="should render balance" duration="103"/>
+    </file>
+</testExecutions>
