@@ -31,6 +31,9 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --record --key aa59fd00-85e3-4c9e-b6e0-f486f1380689"
   },
+  "jest": {
+    "collectCoverage": true,
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
