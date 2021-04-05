@@ -26,8 +26,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.eslintcache
-.eslintcache
 yarn.lock
 cypress/videos/
 coverage/lcov-report/base.css
