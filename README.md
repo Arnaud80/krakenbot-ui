@@ -1,6 +1,8 @@
 
-# Krakenbot-UI provide a simple User Interface
+# Krakenbot-UI provide a simple User Interface to manage your crypto money from [Kraken REST API](https://www.kraken.com/features/api).
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arnaud80_krakenbot-ui&metric=alert_status)](https://sonarcloud.io/dashboard?id=Arnaud80_krakenbot-ui)
+
+![Krakenbot-UI Screenshot](https://github.com/Arnaud80/krakenbot-ui/blob/master/public/Screenshot/history.png)
 
 ## My objectives are :
 - Learn ReactJS
