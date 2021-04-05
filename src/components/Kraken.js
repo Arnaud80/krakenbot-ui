@@ -19,16 +19,14 @@ class Kraken {
         const hash          = new crypt.createHash('sha256');
         const hmac          = new crypt.createHmac('sha512', secret_buffer);
         const hash_digest   = hash.update(nonce + message).digest('binary');
-        const hmac_digest   = hmac.update(path + hash_digest, 'binary').digest('base64');
-
-    	return hmac_digest;
+        
+    	return hmac.update(path + hash_digest, 'binary').digest('base64'); //hmac_digest;
     };
 
     // Get Ticker from public Kraken API
     // pair : <the name of searched pair>
     getTicker = async(pair) => {
-        const resp = await axios.get(config.url + config.public.tickerURI + '?pair=' + pair);
-        return resp;
+        return(await axios.get(config.url + config.public.tickerURI + '?pair=' + pair));
     }
     
     getBalance = async() => {
