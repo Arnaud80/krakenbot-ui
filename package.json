@@ -28,15 +28,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:sonar": "react-scripts test --coverage --watchAll --testResultsProcessor jest-sonar-reporter",
+    "test:sonar": "react-scripts test --coverage --watchAll",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --record --key aa59fd00-85e3-4c9e-b6e0-f486f1380689"
-  },
-  "jestSonar": {
-    "reportPath": "reports",
-    "reportFile": "test-reporter.xml",
-    "indent": 4
   },
   "eslintConfig": {
     "extends": [
