@@ -1,5 +1,6 @@
 
 # Krakenbot-UI provide a simple User Interface
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arnaud80_krakenbot-ui&metric=alert_status)](https://sonarcloud.io/dashboard?id=Arnaud80_krakenbot-ui)
 
 ## My objectives are :
 - Learn ReactJS
