@@ -98,8 +98,8 @@ const App = () => {
       apiReturn = await kraken.getTicker(newBalance[i][1]);
       console.log("App - updateBalance - DEBUG apiReturn=",apiReturn);
 
-      let ticker = apiReturn.data.result[ALTpairs[newBalance[i][1]]];
-      newBalance[i][3] = ticker.c[0];
+      let thisTicker = apiReturn.data.result[ALTpairs[newBalance[i][1]]];
+      newBalance[i][3] = thisTicker.c[0];
     }
 
     setBalance(newBalance);
@@ -107,19 +107,18 @@ const App = () => {
 
   const updateTradesHistory = async() => {  
     const result = await kraken.getTradesHistory();
-    let tradesHistory = result.data.result;
 
-    setTradesHistory(tradesHistory);
+    setTradesHistory(result.data.result);
   }
 
   const sendAddOrder = async(asset, pair, type, orderType, price, volume) => {
     let result = await kraken.getBalance('');
-    let balance = result.data.result;
+    let thisBalance = result.data.result;
 
-    console.log('sendAddOrder - balance[pair]',balance);
-    console.log('sendAddOrder - balance[pair]',balance[asset]);
+    console.log('sendAddOrder - balance[pair]',thisBalance);
+    console.log('sendAddOrder - balance[pair]',thisBalance[asset]);
 
-    result = await kraken.addOrder(pair, type, orderType, price, balance[asset]);
+    result = await kraken.addOrder(pair, type, orderType, price, thisBalance[asset]);
     let addOrder = result.data.result;
 
     console.log('sendAddOrder',addOrder);
