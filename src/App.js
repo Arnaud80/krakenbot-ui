@@ -6,8 +6,7 @@ import './App.css';
 import 'typeface-roboto';
 import 'typeface-roboto-condensed';
 
-import Kraken from './components/Kraken';
-import {ALTpairs, EURpairs } from './components/Kraken';
+import Kraken, {ALTpairs, EURpairs } from './components/Kraken';
 import { Button } from 'react-bootstrap';
 
 const kraken = new Kraken();
@@ -79,7 +78,7 @@ const App = () => {
       //console.log("App - updateBalance - DEBUG key=",key)
       let pair=EURpairs[key];
 
-      let eltBalance=[
+      return [
         //'asset' : 
         key,
         //'pair' : 
@@ -90,16 +89,15 @@ const App = () => {
         ''
       ];
 
-      return eltBalance;
     });
 
     // Second loop needed because await call is not possible in lambda loop
-    for(let i=0;i<newBalance.length;i++) {
-      apiReturn = await kraken.getTicker(newBalance[i][1]);
+    for(let eltBalance of newBalance){
+      apiReturn = await kraken.getTicker(eltBalance[1]);
       console.log("App - updateBalance - DEBUG apiReturn=",apiReturn);
 
-      let thisTicker = apiReturn.data.result[ALTpairs[newBalance[i][1]]];
-      newBalance[i][3] = thisTicker.c[0];
+      let thisTicker = apiReturn.data.result[ALTpairs[eltBalance[1]]];
+      eltBalance[3] = thisTicker.c[0];
     }
 
     setBalance(newBalance);
@@ -143,7 +141,6 @@ const App = () => {
 
   const handleOnSell = async(pair, price, volume) => {
     console.log('App', 'handleOnSell ' + pair + ' at ' + price + 'for ' + volume);
-    //sendAddOrder(asset, pair, 'sell', 'limit', price.toFixed(2), volume);
   }
 
   console.log('========> App = balance =', balance);
