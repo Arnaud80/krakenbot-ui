@@ -11,6 +11,12 @@
 - Add cool functionality like Unit Cost Price (Average buying price)
 - Manage buy / sell orders
 
+## Collaboration
+I would be be very happy to have some developpers joinning my project, so don't hesitate to contact me if you are interesting.
+
+## Disclaimer
+I use this personally for the fun, but if you use it, then you are doing this on your own responsibility !!! I can not be made responsible for lost coins or other stuff that might happen due to some bugs within the code. Use at your own risk!
+
 ## Available Scripts
 
 In the project directory, you can run:
