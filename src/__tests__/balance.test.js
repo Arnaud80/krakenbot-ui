@@ -1,4 +1,4 @@
-// balance.test.js
+// Balance.test.js
 
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";

@@ -4,9 +4,7 @@ import axios from 'axios';
 import crypt from 'crypto';
 import qs from 'qs';
 
-
 const config = require('./kraken-config');
-
 class Kraken {
     // Create a signature for a request
     // path : the URI Path to used (eg. /0/private/Balance)
