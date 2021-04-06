@@ -26,6 +26,19 @@ class Kraken {
     getTicker = async(pair) => {
         return(axios.get(config.url + config.public.tickerURI + '?pair=' + pair));
     }
+
+    // pair = asset pair to get OHLC data for
+    // interval = time frame interval in minutes (optional):
+	// 1 (default), 5, 15, 30, 60, 240, 1440, 10080, 21600
+    // since = return committed OHLC data since given id (optional.  exclusive)
+    getOHLC = async(pair, interval, since) => {
+        const paramInterval = (interval === null)?'':('&interval='+interval);
+        const paramSince = (since === null)?'':('&since='+since);
+        // TODO: Check why we need to put localhost URL and refactor to avoid this localhost URL in hard.
+        const url = 'http://localhost:3000';
+
+        return(axios.get(url + config.public.OHLC_URI + '?pair=' + pair ));
+    }
     
     getBalance = async() => {
         const api_path = config.private.balanceURI;
