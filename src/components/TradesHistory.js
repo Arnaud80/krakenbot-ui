@@ -45,7 +45,7 @@ const getUnitCostPriceInfo = (trades, pair, currentBalance) => {
 
 const LogTrades = props => {
     const logTrades = props.trades;
-    console.log('LogTrades', logTrades)
+
     return (
         <Table striped bordered hover size="sm" variant="dark">
             <thead>

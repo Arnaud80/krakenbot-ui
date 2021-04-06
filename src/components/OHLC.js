@@ -22,8 +22,6 @@ import { elderRay,
   MouseCoordinateX,
   MouseCoordinateY,
   ZoomButtons,
-  withDeviceRatio,
-  withSize,
 } from "react-financial-charts";
 
 import {dataOHLCtoDataChart} from "./ohlcUtils";
@@ -109,7 +107,7 @@ const OHLC = (props) => {
     };
 
     return (
-        <div className="ohcl">   
+        <div className="ohcl" data-testid='ohcl'>   
         {
             ohclIsNull ? (
                 <>...</>
