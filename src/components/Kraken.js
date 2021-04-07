@@ -37,7 +37,7 @@ class Kraken {
         // TODO: Check why we need to put localhost URL and refactor to avoid this localhost URL in hard.
         const url = 'http://localhost:3000';
 
-        return(axios.get(url + config.public.OHLC_URI + '?pair=' + pair ));
+        return(axios.get(url + config.public.OHLC_URI + '?pair=' + pair + paramInterval + paramSince));
     }
     
     getBalance = async() => {

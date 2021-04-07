@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1617728455678" clover="3.2.0">
-  <project timestamp="1617728455678" name="All files">
-    <metrics statements="259" coveredstatements="121" conditionals="42" coveredconditionals="12" methods="53" coveredmethods="21" elements="354" coveredelements="154" complexity="0" loc="259" ncloc="259" packages="3" files="14" classes="14"/>
+<coverage generated="1617800233388" clover="3.2.0">
+  <project timestamp="1617800233388" name="All files">
+    <metrics statements="256" coveredstatements="123" conditionals="42" coveredconditionals="14" methods="52" coveredmethods="19" elements="350" coveredelements="156" complexity="0" loc="256" ncloc="256" packages="3" files="14" classes="14"/>
     <package name="src">
       <metrics statements="84" coveredstatements="0" conditionals="12" coveredconditionals="0" methods="20" coveredmethods="0"/>
       <file name="App.js" path="C:\Users\arnau\OneDrive\Documents\workspaces\krakenbot-ui\src\App.js">
@@ -114,7 +114,7 @@
       </file>
     </package>
     <package name="src.components">
-      <metrics statements="169" coveredstatements="115" conditionals="30" coveredconditionals="12" methods="33" coveredmethods="21"/>
+      <metrics statements="166" coveredstatements="117" conditionals="30" coveredconditionals="14" methods="32" coveredmethods="19"/>
       <file name="Balance.js" path="C:\Users\arnau\OneDrive\Documents\workspaces\krakenbot-ui\src\components\Balance.js">
         <metrics statements="17" coveredstatements="16" conditionals="6" coveredconditionals="3" methods="4" coveredmethods="3"/>
         <line num="7" count="1" type="stmt"/>
@@ -136,15 +136,15 @@
         <line num="71" count="2" type="stmt"/>
       </file>
       <file name="Kraken.js" path="C:\Users\arnau\OneDrive\Documents\workspaces\krakenbot-ui\src\components\Kraken.js">
-        <metrics statements="56" coveredstatements="11" conditionals="4" coveredconditionals="0" methods="6" coveredmethods="0"/>
+        <metrics statements="56" coveredstatements="17" conditionals="4" coveredconditionals="0" methods="6" coveredmethods="1"/>
         <line num="7" count="2" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
         <line num="26" count="1" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
         <line num="34" count="1" type="stmt"/>
@@ -195,54 +195,51 @@
         <line num="166" count="2" type="stmt"/>
       </file>
       <file name="OHLC.js" path="C:\Users\arnau\OneDrive\Documents\workspaces\krakenbot-ui\src\components\OHLC.js">
-        <metrics statements="47" coveredstatements="41" conditionals="8" coveredconditionals="2" methods="16" coveredmethods="11"/>
+        <metrics statements="44" coveredstatements="37" conditionals="8" coveredconditionals="4" methods="15" coveredmethods="8"/>
         <line num="29" count="1" type="stmt"/>
-        <line num="30" count="1" type="stmt"/>
-        <line num="31" count="1" type="stmt"/>
-        <line num="33" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="721" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="43" count="1" type="stmt"/>
-        <line num="47" count="709" type="stmt"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="33" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="723" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="43" count="2" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
         <line num="49" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="55" count="695" type="stmt"/>
+        <line num="51" count="2" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="62" count="1" type="stmt"/>
-        <line num="65" count="1" type="stmt"/>
-        <line num="66" count="1" type="stmt"/>
-        <line num="67" count="1" type="stmt"/>
-        <line num="68" count="1" type="stmt"/>
-        <line num="70" count="1" type="stmt"/>
-        <line num="72" count="1" type="stmt"/>
-        <line num="73" count="1" type="stmt"/>
-        <line num="74" count="1" type="stmt"/>
-        <line num="75" count="1" type="stmt"/>
-        <line num="76" count="1" type="stmt"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="78" count="0" type="stmt"/>
-        <line num="80" count="1" type="stmt"/>
-        <line num="81" count="1" type="stmt"/>
-        <line num="83" count="1" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="65" count="2" type="stmt"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="67" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="73" count="2" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="79" count="2" type="stmt"/>
+        <line num="80" count="100" type="stmt"/>
+        <line num="83" count="2" type="stmt"/>
         <line num="84" count="100" type="stmt"/>
-        <line num="87" count="1" type="stmt"/>
-        <line num="88" count="100" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="92" count="0" type="stmt"/>
-        <line num="95" count="1" type="stmt"/>
-        <line num="96" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="101" count="1" type="stmt"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="105" count="1" type="stmt"/>
-        <line num="106" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="109" count="1" type="stmt"/>
-        <line num="207" count="1" type="stmt"/>
+        <line num="87" count="2" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="92" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="97" count="2" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="101" count="2" type="stmt"/>
+        <line num="102" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="105" count="2" type="stmt"/>
+        <line num="203" count="0" type="stmt"/>
       </file>
       <file name="Ticker.js" path="C:\Users\arnau\OneDrive\Documents\workspaces\krakenbot-ui\src\components\Ticker.js">
         <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>

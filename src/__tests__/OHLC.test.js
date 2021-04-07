@@ -42,3 +42,14 @@ it("should render OHCL", () => {
       container.querySelector("[data-testid='ohcl']")
     ).toBeVisible();
 });
+
+
+it("should render OHCL without ohclData=null", () => {
+    act(() => {
+      render(<OHCL ohlcData={null}/>, container);
+    });
+  
+    expect(
+      container.querySelector("[data-testid='ohcl']").textContent
+    ).toBe('...');
+});

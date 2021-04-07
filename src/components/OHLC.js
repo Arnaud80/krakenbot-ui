@@ -58,7 +58,6 @@ const OHLC = (props) => {
     
     const elder = elderRay();
     
-    const calculatedData = elder(ema26(ema12(initialData)));
     const { data, xScale, xAccessor, displayXAccessor } = ScaleProvider(
         initialData
     );
@@ -74,9 +73,6 @@ const OHLC = (props) => {
     const barChartHeight = gridHeight / 4;
     const barChartOrigin = (_, h) => [0, h - barChartHeight - elderRayHeight];
     const chartHeight = gridHeight - elderRayHeight;
-    const yExtents = (data) => {
-        return [data.high, data.low];
-    };
     const dateTimeFormat = "%d %b";
     const timeDisplayFormat = timeFormat(dateTimeFormat);
 
