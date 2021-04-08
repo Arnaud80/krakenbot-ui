@@ -23,7 +23,7 @@ const App = () => {
     if(autorefresh==='active') {
       const timerId = setTimeout(() => {
         updateTicker();
-        updateTradesHistory();
+        //updateTradesHistory(); // Nonce error is we update too frequently
         updateBalance();
         updateOHLC();
       }, 5000);
