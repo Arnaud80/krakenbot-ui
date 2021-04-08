@@ -23,6 +23,9 @@ const App = () => {
     if(autorefresh==='active') {
       const timerId = setTimeout(() => {
         updateTicker();
+        updateTradesHistory();
+        updateBalance();
+        updateOHLC();
       }, 5000);
       return () => clearTimeout(timerId);
     }
