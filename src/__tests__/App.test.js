@@ -33,7 +33,6 @@ describe('App', () => {
 
         let ticker=null;
         let totalBalance=null;
-        let ohcl=null;
         
         await waitFor(() => expect(kraken.getTicker).toBeCalled());
         await waitFor(() => expect(kraken.getBalance).toBeCalled());
@@ -47,11 +46,7 @@ describe('App', () => {
         totalBalance = screen.queryByTestId('totalBalance').textContent;
         expect(totalBalance).toBe('104.2435377138 Euros');
 
-        /*ohcl = screen.queryByText('react-financial-charts');
-        console.log('JEST - ohcl=',ohcl);
-        expect(ohcl).toBe('react-financial-charts');*/
-
         // debug
-        //screen.debug();
+        screen.debug();
     });
 });

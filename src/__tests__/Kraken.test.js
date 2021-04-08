@@ -1,6 +1,6 @@
 // Kraken.test.js
 
-import kraken, {ALTpairs } from '../components/Kraken';
+import kraken from '../components/Kraken';
 import axios from 'axios';
 
 jest.mock('axios');
@@ -40,13 +40,21 @@ describe('Kraken tests', () => {
     });
 
     test('getOHLC', async () => {
-        axios.get.mockImplementationOnce((url) =>
+        axios.get.mockImplementation((url) =>
             Promise.resolve(url)
         );
 
         expect(
+            await kraken.getOHLC('XBTEUR', 1, 1234567890)
+        ).toBe('http://localhost:3000/0/public/OHLC?pair=XBTEUR&interval=1&since=1234567890');
+
+        expect(
             await kraken.getOHLC('XBTEUR', 1, null)
         ).toBe('http://localhost:3000/0/public/OHLC?pair=XBTEUR&interval=1');
+        
+        expect(
+            await kraken.getOHLC('XBTEUR', null, null)
+        ).toBe('http://localhost:3000/0/public/OHLC?pair=XBTEUR');
     })
 
     test('getTradesHistory', async () => {

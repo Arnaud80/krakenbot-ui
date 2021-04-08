@@ -24,7 +24,7 @@ class Kraken {
     // Get Ticker from public Kraken API
     // pair : <the name of searched pair>
     getTicker = async(pair) => {
-        return await axios.get(config.url + config.public.tickerURI + '?pair=' + pair);;
+        return axios.get(config.url + config.public.tickerURI + '?pair=' + pair);
     }
 
     // pair = asset pair to get OHLC data for
@@ -37,7 +37,7 @@ class Kraken {
         // TODO: Check why we need to put localhost URL and refactor to avoid this localhost URL in hard.
         const url = 'http://localhost:3000';
 
-        return await axios.get(url + config.public.OHLC_URI + '?pair=' + pair + paramInterval + paramSince);
+        return axios.get(url + config.public.OHLC_URI + '?pair=' + pair + paramInterval + paramSince);
     }
     
     getBalance = async() => {
@@ -66,7 +66,7 @@ class Kraken {
             url,
           };
 
-        return await axios(options);
+        return axios(options);
     }
 
     getTradesHistory = async() => {
@@ -95,7 +95,7 @@ class Kraken {
             url,
           };
 
-        return await axios(options);
+        return axios(options);
     }
 
     addOrder = async(pair, type, orderType, price, volume) => {
@@ -131,9 +131,7 @@ class Kraken {
             url,
           };
 
-        const resp = await axios(options);
-        console.log(resp);
-        return resp;
+        return axios(options);
     }
 }
 
