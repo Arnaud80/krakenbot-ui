@@ -1,4 +1,4 @@
-export const ohlcAPIreturn = {
+export const apiReturnOHCL = {
     "error": [],
     "result": {
         "XXBTZEUR": [

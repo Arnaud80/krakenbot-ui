@@ -1,7 +1,6 @@
 // Kraken.test.js
 
-import Kraken, {ALTpairs } from '../components/Kraken';
-const kraken = new Kraken();
+import kraken, {ALTpairs } from '../components/Kraken';
 
 const path='/0/private/Balance';
 const request={

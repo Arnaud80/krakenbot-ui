@@ -5,7 +5,7 @@ import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import OHCL from '../components/OHLC';
 import {dataOHLCtoDataChart} from '../components/ohlcUtils';
-import {ohlcAPIreturnSimple, ohlcAPIreturn, ohlcDataChartSimple} from '../__mock__/OHLC.mock'
+import {ohlcAPIreturnSimple, apiReturnOHCL, ohlcDataChartSimple} from '../__mocks__/OHLC.mock'
 
 it("Validate dataOHLCtoDataChart function", () => {
     
@@ -35,7 +35,7 @@ afterEach(() => {
 
 it("should render OHCL", () => {
     act(() => {
-      render(<OHCL ohlcData={ohlcAPIreturn.result.XXBTZEUR}/>, container);
+      render(<OHCL ohlcData={apiReturnOHCL.result.XXBTZEUR}/>, container);
     });
   
     expect(

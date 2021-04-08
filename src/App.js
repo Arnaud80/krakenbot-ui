@@ -7,10 +7,8 @@ import './App.css';
 import 'typeface-roboto';
 import 'typeface-roboto-condensed';
 
-import Kraken, {ALTpairs, EURpairs } from './components/Kraken';
+import kraken, {ALTpairs, EURpairs } from './components/Kraken';
 import { Button } from 'react-bootstrap';
-
-const kraken = new Kraken();
 
 const App = () => {
   const [currentPair, setcurrentPair] = useState('XBTEUR');
@@ -25,8 +23,6 @@ const App = () => {
     if(autorefresh==='active') {
       const timerId = setTimeout(() => {
         updateTicker();
-        updateBalance();
-        updateOHLC();
       }, 5000);
       return () => clearTimeout(timerId);
     }
@@ -45,6 +41,9 @@ const App = () => {
   useEffect( () => {
     console.log('App - UseEffect','one time executed to load TradesHistory');
     updateTradesHistory();
+    updateTicker();
+    updateBalance();
+    updateOHLC();
   }, [])
 
   const updateOHLC = async() => {  
@@ -60,9 +59,9 @@ const App = () => {
       //data: null
     };
 
-    console.log('App - updateTicker :',newTicker.pair);
-    const result = await kraken.getTicker(newTicker.pair);
-    newTicker.data = result.data.result[ALTpairs[newTicker.pair]];
+    const apiReturn = await kraken.getTicker(newTicker.pair);
+
+    newTicker.data = apiReturn.data.result[ALTpairs[newTicker.pair]];
 
     // Save the last result, before to update data
     try {
@@ -154,14 +153,14 @@ const App = () => {
 
   return (    
       <div className="App">
-        <Ticker ticker={ticker} onClick={handleTickerClick}/>
+        <Ticker data-testid='ticker' ticker={ticker} onClick={handleTickerClick}/>
         <OHLC ohlcData={ohlcData} />
         <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
         <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
           {autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}
         </Button>
-      </div>  
+      </div>
     );
-}      
+}
 
 export default App;
