@@ -1,6 +1,9 @@
 // Kraken.test.js
 
 import kraken, {ALTpairs } from '../components/Kraken';
+import axios from 'axios';
+
+jest.mock('axios');
 
 const path='/0/private/Balance';
 const request={
@@ -9,8 +12,60 @@ const request={
 const secret= 'secret';
 const nonce=1617799787666000;
 
-it("Validate getMessageSignature = (path, request, secret, nonce)", () => {
-    expect(
-        kraken.getMessageSignature(path, request, secret, nonce)
-    ).toBe('l520RUHN+k9lBoT2oJD9Ysrn06Iwv+ifzXib6M7XQBWQYSCSOw1emYzCLsu8IqtghN8kRjvpD5Qp2alIJ5cA/Q==');
+describe('Kraken tests', () => {
+    test('getMessageSignature', async () => {
+        expect(
+            kraken.getMessageSignature(path, request, secret, nonce)
+        ).toBe('l520RUHN+k9lBoT2oJD9Ysrn06Iwv+ifzXib6M7XQBWQYSCSOw1emYzCLsu8IqtghN8kRjvpD5Qp2alIJ5cA/Q==');
+    });
+
+    test('getTicker', async () => {
+        axios.get.mockImplementationOnce((url) =>
+            Promise.resolve(url)
+        );
+
+        expect(
+            await kraken.getTicker('test')
+        ).toBe('https://api.kraken.com/0/public/Ticker?pair=test');
+    });
+
+    test('getBalance', async () => {
+        axios.mockImplementationOnce((options) =>
+            Promise.resolve(options.url)
+        );
+
+        expect(
+            await kraken.getBalance()
+        ).toBe('http://localhost:3000/0/private/Balance');
+    });
+
+    test('getOHLC', async () => {
+        axios.get.mockImplementationOnce((url) =>
+            Promise.resolve(url)
+        );
+
+        expect(
+            await kraken.getOHLC('XBTEUR', 1, null)
+        ).toBe('http://localhost:3000/0/public/OHLC?pair=XBTEUR&interval=1');
+    })
+
+    test('getTradesHistory', async () => {
+        axios.mockImplementationOnce((options) =>
+            Promise.resolve(options.url)
+        );
+
+        expect(
+            await kraken.getTradesHistory()
+        ).toBe('http://localhost:3000/0/private/TradesHistory');
+    });
+
+    test('addOrder', async () => {
+        axios.mockImplementationOnce((options) =>
+            Promise.resolve(options.url)
+        );
+
+        expect(
+            await kraken.addOrder()
+        ).toBe('http://localhost:3000/0/private/AddOrder');
+    });
 });
