@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Ticker from './components/Ticker';
 import Balance from './components/Balance';
+import OHLC from './components/OHLC';
 
 import './App.css';
 import 'typeface-roboto';
 import 'typeface-roboto-condensed';
 
-import Kraken, {ALTpairs, EURpairs } from './components/Kraken';
+import kraken, {ALTpairs, EURpairs } from './components/Kraken';
 import { Button } from 'react-bootstrap';
-
-const kraken = new Kraken();
 
 const App = () => {
   const [currentPair, setcurrentPair] = useState('XBTEUR');
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
+  const [ohlcData, setOhlcData] = useState(null);
   const [tradesHistory, setTradesHistory] = useState(null);
   const [autorefresh, setAutoRefresh] = useState('active');
 
@@ -23,8 +23,9 @@ const App = () => {
     if(autorefresh==='active') {
       const timerId = setTimeout(() => {
         updateTicker();
-        // To update only on time at the startup.
+        //updateTradesHistory(); // Nonce error is we update too frequently
         updateBalance();
+        updateOHLC();
       }, 5000);
       return () => clearTimeout(timerId);
     }
@@ -32,7 +33,9 @@ const App = () => {
 
   useEffect( () => {
     console.log('App - UseEffect','currentPair');
-    updateTicker();    
+    updateTicker();
+    updateBalance();
+    updateOHLC();
     // As we need updateTicker for manual refresh, we disable the warning for the previous line.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPair]);
@@ -41,7 +44,16 @@ const App = () => {
   useEffect( () => {
     console.log('App - UseEffect','one time executed to load TradesHistory');
     updateTradesHistory();
+    updateTicker();
+    updateBalance();
+    updateOHLC();
   }, [])
+
+  const updateOHLC = async() => {  
+    const APIreturn = await kraken.getOHLC(currentPair,'1',null);
+
+    setOhlcData(APIreturn.data.result[ALTpairs[currentPair]]);
+  }
 
   const updateTicker = async() => {  
     let newTicker={
@@ -50,9 +62,9 @@ const App = () => {
       //data: null
     };
 
-    console.log('App - updateTicker :',newTicker.pair);
-    const result = await kraken.getTicker(newTicker.pair);
-    newTicker.data = result.data.result[ALTpairs[newTicker.pair]];
+    const apiReturn = await kraken.getTicker(newTicker.pair);
+
+    newTicker.data = apiReturn.data.result[ALTpairs[newTicker.pair]];
 
     // Save the last result, before to update data
     try {
@@ -94,7 +106,6 @@ const App = () => {
     // Second loop needed because await call is not possible in lambda loop
     for(let eltBalance of newBalance){
       apiReturn = await kraken.getTicker(eltBalance[1]);
-      console.log("App - updateBalance - DEBUG apiReturn=",apiReturn);
 
       let thisTicker = apiReturn.data.result[ALTpairs[eltBalance[1]]];
       eltBalance[3] = thisTicker.c[0];
@@ -143,18 +154,16 @@ const App = () => {
     console.log('App', 'handleOnSell ' + pair + ' at ' + price + 'for ' + volume);
   }
 
-  console.log('========> App = balance =', balance);
-
   return (    
       <div className="App">
-        <Ticker ticker={ticker} onClick={handleTickerClick}/>
+        <Ticker data-testid='ticker' ticker={ticker} onClick={handleTickerClick}/>
+        <OHLC ohlcData={ohlcData} />
         <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
-        
         <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
           {autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}
         </Button>
-      </div>  
+      </div>
     );
-}      
+}
 
 export default App;

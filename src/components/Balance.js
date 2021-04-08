@@ -91,30 +91,3 @@ const Balance = props => {
 }
 
 export default Balance;
-
-/*
-<div className='Balance' data-testid='balance'>testt</div>
-            <div style={{ width: 400 }}>
-              <Chart type='pie' data={dataChart} data-testid='chart'/>
-              {totalBalance} Euros
-            </div>
-              <Accordion defaultActiveKey="0" data-testid='accordion'>
-                { // Loop on returned assets
-                  Object.keys(balance).map((i) => (
-                      <Card key={i} data-testid='card{i}'>
-                          <Card.Header>
-                              <CustomToggle eventKey={i} data-testid='toggle{i}'>
-                              {assets[balance[i][0]]} ({balance[i][0]})
-                              </CustomToggle>
-                          </Card.Header>
-                          <Accordion.Collapse eventKey={i}>
-                              <Card.Body data-testid='body{i}'>
-                                  {balance[i][2]}
-                                  <TradesHistory tradesHistory={tradesHistory} currentPair={EURpairs[balance[i][0]]} currentBalance={balance[balance[i][0]]}/>
-                              </Card.Body>
-                          </Accordion.Collapse>
-                      </Card>
-                  ))
-                }
-              </Accordion> 
-*/

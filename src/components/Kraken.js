@@ -4,9 +4,7 @@ import axios from 'axios';
 import crypt from 'crypto';
 import qs from 'qs';
 
-
 const config = require('./kraken-config');
-
 class Kraken {
     // Create a signature for a request
     // path : the URI Path to used (eg. /0/private/Balance)
@@ -26,7 +24,20 @@ class Kraken {
     // Get Ticker from public Kraken API
     // pair : <the name of searched pair>
     getTicker = async(pair) => {
-        return(axios.get(config.url + config.public.tickerURI + '?pair=' + pair));
+        return axios.get(config.url + config.public.tickerURI + '?pair=' + pair);
+    }
+
+    // pair = asset pair to get OHLC data for
+    // interval = time frame interval in minutes (optional):
+	// 1 (default), 5, 15, 30, 60, 240, 1440, 10080, 21600
+    // since = return committed OHLC data since given id (optional.  exclusive)
+    getOHLC = async(pair, interval, since) => {
+        const paramInterval = (interval === null)?'':('&interval='+interval);
+        const paramSince = (since === null)?'':('&since='+since);
+        // TODO: Check why we need to put localhost URL and refactor to avoid this localhost URL in hard.
+        const url = 'http://localhost:3000';
+
+        return axios.get(url + config.public.OHLC_URI + '?pair=' + pair + paramInterval + paramSince);
     }
     
     getBalance = async() => {
@@ -55,9 +66,7 @@ class Kraken {
             url,
           };
 
-        const resp = await axios(options);
-        console.log(resp);
-        return resp;
+        return axios(options);
     }
 
     getTradesHistory = async() => {
@@ -86,9 +95,7 @@ class Kraken {
             url,
           };
 
-        const resp = await axios(options);
-        console.log(resp);
-        return resp;
+        return axios(options);
     }
 
     addOrder = async(pair, type, orderType, price, volume) => {
@@ -124,9 +131,7 @@ class Kraken {
             url,
           };
 
-        const resp = await axios(options);
-        console.log(resp);
-        return resp;
+        return axios(options);
     }
 }
 
@@ -159,4 +164,6 @@ const ALTpairs = {
     'BCHEUR' : 'BCHEUR',
 }
 
-export {Kraken as default, assets, pairs, EURpairs, ALTpairs};
+const kraken = new Kraken();
+
+export {kraken as default, assets, pairs, EURpairs, ALTpairs};

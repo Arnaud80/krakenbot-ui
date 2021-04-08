@@ -15,10 +15,12 @@
     "crypto-js": "^4.0.0",
     "cypress": "^6.8.0",
     "http2-wrapper": "^1.0.3",
+    "jest-canvas-mock": "^2.3.1",
     "jest-sonar-reporter": "^2.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
+    "react-financial-charts": "^1.1.0",
     "react-scripts": "4.0.1",
     "typeface-roboto": "^1.1.13",
     "typeface-roboto-condensed": "^1.1.13",
@@ -32,6 +34,11 @@
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --record --key aa59fd00-85e3-4c9e-b6e0-f486f1380689"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"
+    ]
   },
   "eslintConfig": {
     "extends": [

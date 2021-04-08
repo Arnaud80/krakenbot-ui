@@ -7,7 +7,8 @@ const config = {
   private_key: secret.private_key, // API Private Key    
   url: 'https://api.kraken.com', // URL of the Kraken API
   public: {
-    tickerURI: '/0/public/Ticker', // Ticker URI with xbteur parameter
+    tickerURI: '/0/public/Ticker', // Ticker URI
+    OHLC_URI: '/0/public/OHLC', // OHLC URI
   },
   private: {
     balanceURI: '/0/private/Balance', // Balance URI
