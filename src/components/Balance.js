@@ -23,7 +23,7 @@ const Balance = props => {
 
     let totalBalance = 0.0;
 
-    //console.log('Balance - balance =', balance);
+    console.log('Balance - balance =', balance);
     //console.log('Balance - tradesHistory =', tradesHistory);
 
 

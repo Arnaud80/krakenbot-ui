@@ -10,14 +10,15 @@ import 'typeface-roboto-condensed';
 import kraken, {ALTpairs, EURpairs } from './components/Kraken';
 import { Button } from 'react-bootstrap';
 
-const App = () => {
-  const [currentPair, setcurrentPair] = useState('XBTEUR');
+const useAppState = (initialPair, autoRefreshStatus) => {
+  const [currentPair, setcurrentPair] = useState(initialPair);
   const [ticker, setTicker] = useState(null);
   const [balance, setBalance] = useState(null);
   const [ohlcData, setOhlcData] = useState(null);
   const [tradesHistory, setTradesHistory] = useState(null);
-  const [autorefresh, setAutoRefresh] = useState('active');
+  const [autorefresh, setAutoRefresh] = useState(autoRefreshStatus);
 
+  
   useEffect( () => {
     console.log('App - UseEffect','all');
     if(autorefresh==='active') {
@@ -103,12 +104,18 @@ const App = () => {
 
     });
 
+    console.log('DEBUG newBalance',newBalance);
+
     // Second loop needed because await call is not possible in lambda loop
     for(let eltBalance of newBalance){
-      apiReturn = await kraken.getTicker(eltBalance[1]);
+      if(eltBalance[1]!==undefined) {
+        apiReturn = await kraken.getTicker(eltBalance[1]);
 
-      let thisTicker = apiReturn.data.result[ALTpairs[eltBalance[1]]];
-      eltBalance[3] = thisTicker.c[0];
+        let thisTicker = apiReturn.data.result[ALTpairs[eltBalance[1]]];
+        eltBalance[3] = thisTicker.c[0];
+      } else {
+        eltBalance[3] = '1';
+      }
     }
 
     setBalance(newBalance);
@@ -133,6 +140,30 @@ const App = () => {
     console.log('sendAddOrder',addOrder);
   }
 
+  return {
+    ticker,
+    balance,
+    ohlcData,
+    tradesHistory,
+    autorefresh,
+    updateTicker,
+    setcurrentPair,
+    setAutoRefresh
+  };
+}
+
+const App = () => {
+  const {
+    ticker,
+    balance,
+    ohlcData,
+    tradesHistory,
+    autorefresh,
+    updateTicker,
+    setcurrentPair,
+    setAutoRefresh
+  } = useAppState('XBTEUR', 'active');
+
   const handleTickerClick = async() => {  
     console.log('App', 'handleTickerClick');
     updateTicker();
@@ -143,11 +174,6 @@ const App = () => {
     console.log('App - handleBalanceClick', pair);
     //updateBalance();
     //updateTicker();
-  }
-
-  const handleTradesHistoryClick = async() => {  
-    console.log('App', 'handleTradesHistoryClick');
-    updateTradesHistory();
   }
 
   const handleOnSell = async(pair, price, volume) => {

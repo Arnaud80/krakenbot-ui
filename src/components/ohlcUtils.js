@@ -2,7 +2,6 @@
 
 export const dataOHLCtoDataChart = (ohlcData) => {
     let result=[];
-    let i=0;
 
     for(let i=0; i<ohlcData.length; i++) {
         result[i]={
