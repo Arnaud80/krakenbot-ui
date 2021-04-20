@@ -7,7 +7,7 @@ import './App.css';
 import 'typeface-roboto';
 import 'typeface-roboto-condensed';
 
-import kraken, {ALTpairs, EURpairs } from './components/Kraken';
+import kraken, { ALTpairs, EURpairs } from './components/Kraken';
 import { Button } from 'react-bootstrap';
 
 const useAppState = (initialPair, autoRefreshStatus) => {
@@ -18,10 +18,10 @@ const useAppState = (initialPair, autoRefreshStatus) => {
   const [tradesHistory, setTradesHistory] = useState(null);
   const [autorefresh, setAutoRefresh] = useState(autoRefreshStatus);
 
-  
-  useEffect( () => {
-    console.log('App - UseEffect','all');
-    if(autorefresh==='active') {
+
+  useEffect(() => {
+    console.log('App - UseEffect', 'all');
+    if (autorefresh === 'active') {
       const timerId = setTimeout(() => {
         updateTicker();
         //updateTradesHistory(); // Nonce error is we update too frequently
@@ -32,8 +32,8 @@ const useAppState = (initialPair, autoRefreshStatus) => {
     }
   });
 
-  useEffect( () => {
-    console.log('App - UseEffect','currentPair');
+  useEffect(() => {
+    console.log('App - UseEffect', 'currentPair');
     updateTicker();
     updateBalance();
     updateOHLC();
@@ -42,22 +42,22 @@ const useAppState = (initialPair, autoRefreshStatus) => {
   }, [currentPair]);
 
   // Executed one time
-  useEffect( () => {
-    console.log('App - UseEffect','one time executed to load TradesHistory');
+  useEffect(() => {
+    console.log('App - UseEffect', 'one time executed to load TradesHistory');
     updateTradesHistory();
     updateTicker();
     updateBalance();
     updateOHLC();
   }, [])
 
-  const updateOHLC = async() => {  
-    const APIreturn = await kraken.getOHLC(currentPair,'1',null);
+  const updateOHLC = async () => {
+    const APIreturn = await kraken.getOHLC(currentPair, '1', null);
 
     setOhlcData(APIreturn.data.result[ALTpairs[currentPair]]);
   }
 
-  const updateTicker = async() => {  
-    let newTicker={
+  const updateTicker = async () => {
+    let newTicker = {
       pair: currentPair,
       //lastData: null,
       //data: null
@@ -79,7 +79,7 @@ const useAppState = (initialPair, autoRefreshStatus) => {
     setTicker(newTicker);
   }
 
-  const updateBalance = async() => {  
+  const updateBalance = async () => {
     let apiReturn = await kraken.getBalance('');
     let result = apiReturn.data.result;
     let newBalance = [];
@@ -87,9 +87,9 @@ const useAppState = (initialPair, autoRefreshStatus) => {
     // First loop on API Balance return to prepare the newBalance
     // TODO : Refactoring - Check if we can do better by using object key/value insteed Array
     // Maybe by using 4 Arrays named Asset, Pair, Volume and Value
-    newBalance=Object.keys(result).filter(key => result[key]>=0.0001).map((key, i) => {
+    newBalance = Object.keys(result).filter(key => result[key] >= 0.0001).map((key, i) => {
       //console.log("App - updateBalance - DEBUG key=",key)
-      let pair=EURpairs[key];
+      let pair = EURpairs[key];
 
       return [
         //'asset' : 
@@ -104,11 +104,11 @@ const useAppState = (initialPair, autoRefreshStatus) => {
 
     });
 
-    console.log('DEBUG newBalance',newBalance);
+    console.log('DEBUG newBalance', newBalance);
 
     // Second loop needed because await call is not possible in lambda loop
-    for(let eltBalance of newBalance){
-      if(eltBalance[1]!==undefined) {
+    for (let eltBalance of newBalance) {
+      if (eltBalance[1] !== undefined) {
         apiReturn = await kraken.getTicker(eltBalance[1]);
 
         let thisTicker = apiReturn.data.result[ALTpairs[eltBalance[1]]];
@@ -121,23 +121,23 @@ const useAppState = (initialPair, autoRefreshStatus) => {
     setBalance(newBalance);
   }
 
-  const updateTradesHistory = async() => {  
+  const updateTradesHistory = async () => {
     const result = await kraken.getTradesHistory();
 
     setTradesHistory(result.data.result);
   }
 
-  const sendAddOrder = async(asset, pair, type, orderType, price, volume) => {
+  const sendAddOrder = async (asset, pair, type, orderType, price, volume) => {
     let result = await kraken.getBalance('');
     let thisBalance = result.data.result;
 
-    console.log('sendAddOrder - balance[pair]',thisBalance);
-    console.log('sendAddOrder - balance[pair]',thisBalance[asset]);
+    console.log('sendAddOrder - balance[pair]', thisBalance);
+    console.log('sendAddOrder - balance[pair]', thisBalance[asset]);
 
     result = await kraken.addOrder(pair, type, orderType, price, thisBalance[asset]);
     let addOrder = result.data.result;
 
-    console.log('sendAddOrder',addOrder);
+    console.log('sendAddOrder', addOrder);
   }
 
   return {
@@ -164,32 +164,32 @@ const App = () => {
     setAutoRefresh
   } = useAppState('XBTEUR', 'active');
 
-  const handleTickerClick = async() => {  
+  const handleTickerClick = async () => {
     console.log('App', 'handleTickerClick');
     updateTicker();
   }
 
-  const handleBalanceClick = async(pair) => {
+  const handleBalanceClick = async (pair) => {
     setcurrentPair(pair);
     console.log('App - handleBalanceClick', pair);
     //updateBalance();
     //updateTicker();
   }
 
-  const handleOnSell = async(pair, price, volume) => {
+  const handleOnSell = async (pair, price, volume) => {
     console.log('App', 'handleOnSell ' + pair + ' at ' + price + 'for ' + volume);
   }
 
-  return (    
-      <div className="App">
-        <Ticker data-testid='ticker' ticker={ticker} onClick={handleTickerClick}/>
-        <OHLC ohlcData={ohlcData} />
-        <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick}/>
-        <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh==='active'?'disable':'active')}>
-          {autorefresh==='active'?'Stop Auto Refresh':'Start Auto Refresh'}
-        </Button>
-      </div>
-    );
+  return (
+    <div className="App">
+      <Ticker data-testid='ticker' ticker={ticker} onClick={handleTickerClick} />
+      <OHLC ohlcData={ohlcData} />
+      <Balance balance={balance} tradesHistory={tradesHistory} onClick={handleBalanceClick} />
+      <Button variant="primary" autorefresh={autorefresh} onClick={() => setAutoRefresh(autorefresh === 'active' ? 'disable' : 'active')}>
+        {autorefresh === 'active' ? 'Stop Auto Refresh' : 'Start Auto Refresh'}
+      </Button>
+    </div>
+  );
 }
 
 export default App;
